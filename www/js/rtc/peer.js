@@ -25,7 +25,8 @@
       { urls: ['stun:stun.cloudflare.com:3478', 'stun:74.125.250.129:19302'] },
     ],
     iceTransportPolicy: 'all',
-    iceCandidatePoolSize: 4,
+    // 候选池预热：首次建连更快，代价是页面打开时多收集几条候选
+    iceCandidatePoolSize: 2,
   };
 
   class Peer {

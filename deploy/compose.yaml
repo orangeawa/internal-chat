@@ -1,0 +1,60 @@
+# 发个东西 —— 部署配置
+#
+# 服务组成：
+#   app       Node 服务，负责静态页面 + WebSocket 信令
+#   coturn    TURN 中继，只处理异地打洞失败的兜底流量
+#
+# 网络说明：
+#   - app 不对外暴露端口，只挂在 komari-net 上，由 cloudflared 隧道转发
+#   - coturn 用 host 网络，因为 WebRTC 中继需要 UDP 端口段，隧道代理不了
+#
+# 部署：docker compose up -d --build
+# 日志：docker compose logs -f app
+
+services:
+  app:
+    build: .
+    image: internal-chat:latest
+    container_name: internal-chat
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    environment:
+      TZ: Asia/Shanghai
+    volumes:
+      # 房间密码配置，只读挂载；文件不存在时服务会以公共频道模式正常启动
+      - ./room_pwd.json:/app/room_pwd.json:ro
+    networks:
+      - komari-net
+    deploy:
+      resources:
+        limits:
+          # 实测空载 61MB / 100 连接 68MB，256MB 留足余量
+          memory: 256M
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
+
+  coturn:
+    image: docker.1ms.run/coturn/coturn:4.6.3-alpine
+    container_name: internal-chat-turn
+    restart: unless-stopped
+    # host 网络：中继流量走 UDP，容器桥接会额外增加 NAT 开销且端口映射麻烦
+    network_mode: host
+    volumes:
+      - ./turnserver.conf:/etc/coturn/turnserver.conf:ro
+    deploy:
+      resources:
+        limits:
+          memory: 128M
+    logging:
+      driver: json-file
+      options:
+        max-size: "5m"
+        max-file: "2"
+
+networks:
+  komari-net:
+    external: true

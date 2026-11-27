@@ -1,0 +1,11 @@
+node_modules
+npm-debug.log*
+.git
+.gitignore
+.idea
+.vscode
+dist
+test
+*.md
+.room_pwd.json
+room_pwd.json

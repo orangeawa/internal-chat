@@ -40,10 +40,12 @@ function parsePort(argv) {
 
 function main() {
   const port = parsePort(process.argv);
+  // 可选：把静态资源直连到 CDN / 对象存储，Node 只保留 /ws 信令
+  const cdnOrigin = (process.env.STATIC_ORIGIN || '').trim();
 
   const roomConfig = loadRoomConfig();
   const registry = new UserRegistry();
-  const httpServer = createHttpServer({ wwwRoot: WWW_ROOT });
+  const httpServer = createHttpServer({ wwwRoot: WWW_ROOT, cdnOrigin });
   const signaling = new SignalingServer(httpServer, { registry, roomConfig });
   signaling.startHeartbeatSweeper();
 
@@ -54,6 +56,9 @@ function main() {
 
   httpServer.listen(port, () => {
     logger.log(`server start on port ${port}`);
+    if (cdnOrigin) {
+      logger.log(`静态资源直连: ${cdnOrigin}`);
+    }
   });
 
   const shutdown = (signal) => {

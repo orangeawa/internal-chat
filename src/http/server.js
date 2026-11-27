@@ -6,25 +6,18 @@
  */
 
 const http = require('http');
-const { serveStatic } = require('./static');
+const { StaticServer } = require('./static');
 const { logger } = require('../logger');
 
 /**
- * @param {{ port: number, wwwRoot: string }} options
+ * @param {{ wwwRoot: string, cdnOrigin?: string }} options
  * @returns {import('http').Server}
  */
-function createHttpServer({ wwwRoot }) {
+function createHttpServer({ wwwRoot, cdnOrigin }) {
+  const staticServer = new StaticServer({ root: wwwRoot, cdnOrigin });
+
   const server = http.createServer((req, res) => {
-    try {
-      serveStatic(req, res, { root: wwwRoot });
-    } catch (err) {
-      logger.error('处理 HTTP 请求失败:', err);
-      if (!res.headersSent) {
-        res.statusCode = 500;
-        res.setHeader('Content-Type', 'text/plain; charset=utf-8');
-      }
-      res.end('Internal Server Error');
-    }
+    staticServer.handle(req, res);
   });
 
   server.on('clientError', (err, socket) => {
