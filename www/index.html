@@ -6,8 +6,7 @@
   <title>发个东西 - 局域网文字/文件P2P传输工具</title>
   <meta name="description" content="一个简单易用的局域网文件传输工具，基于WebRTC实现点对点连接，支持文本和文件快速传输，无需中转服务器，安全高效。" />
   <meta name="keywords" content="局域网传输, 点对点传输, 文件分享工具, WebRTC传输, 局域网文件传输, P2P传输工具, 无中转传输" />
-  <script src="./xchatuser.js?v=22"></script>
-  <link rel="stylesheet" href="./style.css?v=22">
+  <link rel="stylesheet" href="./style.css?v=23">
 </head>
 <body>
   <div class="dragtip">
@@ -42,7 +41,7 @@
         </button>
       </div>
     </div>
-    <textarea id="messageInput" class="txt-msg" onkeydown="enterTxt(event)"></textarea>
+    <textarea id="messageInput" class="txt-msg"></textarea>
   </div>
   <div class="right">
     <ul id="users">
@@ -63,8 +62,8 @@
         </div>
       </div>
       <div class="modal-footer">
-        <button onclick="cancelSendFile()">取消</button>
-        <button onclick="confirmSendFile()">发送</button>
+        <button id="fileSendCancelBtn">取消</button>
+        <button id="fileSendConfirmBtn">发送</button>
       </div>
     </div>
   </div>
@@ -76,8 +75,8 @@
         <input type="text" id="nicknameInput" maxlength="10" placeholder="请输入昵称（最多10个字符）">
       </div>
       <div class="modal-footer">
-        <button onclick="closeNicknameModal()">取消</button>
-        <button onclick="saveNickname()">保存</button>
+        <button id="cancelNicknameBtn">取消</button>
+        <button id="saveNicknameBtn">保存</button>
       </div>
     </div>
   </div>
@@ -89,11 +88,26 @@
         <input type="password" id="roomPasswordInput" placeholder="请输入密码" autocomplete="off" name="password_fake">
       </div>
       <div class="modal-footer">
-        <button onclick="submitRoomPassword()">确认</button>
+        <button id="submitPasswordBtn">确认</button>
       </div>
     </div>
   </div>
 
-  <script src="./index.js?v=22"></script>
+  <!-- 基础工具 -->
+  <script src="./js/core/utils.js?v=23"></script>
+  <script src="./js/core/md5.js?v=23"></script>
+  <script src="./js/core/transfer.js?v=23"></script>
+  <!-- 通信 -->
+  <script src="./js/signaling-client.js?v=23"></script>
+  <script src="./js/rtc/peer.js?v=23"></script>
+  <!-- UI -->
+  <script src="./js/ui/dialog.js?v=23"></script>
+  <script src="./js/ui/chat-view.js?v=23"></script>
+  <script src="./js/ui/user-list.js?v=23"></script>
+  <script src="./js/ui/file-send-dialog.js?v=23"></script>
+  <script src="./js/ui/file-drop.js?v=23"></script>
+  <!-- 应用 -->
+  <script src="./js/app.js?v=23"></script>
+  <script src="./js/main.js?v=23"></script>
 </body>
 </html>

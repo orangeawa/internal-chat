@@ -463,3 +463,86 @@ pre {
 .image-preview img:hover {
   transform: scale(1.02);
 }
+
+/* ---------- 文件卡片 / 下载按钮 ---------- */
+.download-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background-color: #2a2a2a;
+  color: #64B5F6;
+  text-decoration: none;
+  transition: background-color 0.2s;
+}
+
+.download-btn:hover {
+  background-color: #363636;
+}
+
+.file-size {
+  color: #888;
+  font-size: 12px;
+  margin-left: 4px;
+}
+
+/* ---------- 用户选择对话框 ---------- */
+.user-select-empty {
+  color: #888;
+  padding: 12px 8px;
+  text-align: center;
+  font-size: 14px;
+}
+
+.peer-hint {
+  font-style: normal;
+  font-size: 12px;
+  margin-left: 8px;
+}
+
+.peer-hint.ok { color: #4CAF50; }
+.peer-hint.warn { color: #FFA726; }
+
+/* ---------- toast ---------- */
+.toast-container {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 2000;
+  pointer-events: none;
+}
+
+.toast {
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: #2a2a2a;
+  border-left: 3px solid #64B5F6;
+  color: #e0e0e0;
+  font-size: 14px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+  max-width: 360px;
+  opacity: 1;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.toast-out {
+  opacity: 0;
+  transform: translateX(20px);
+}
+
+.toast-ok { border-left-color: #4CAF50; }
+.toast-warn { border-left-color: #FFA726; }
+.toast-error { border-left-color: #F44336; }
+
+.chat-item_content.system-content {
+  display: block;
+}
+
+.chat-item_content.system-content pre {
+  color: #FFA726;
+}
